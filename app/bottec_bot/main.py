@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 
 from bottec_bot.dispatcher import bot, dp
 from app.bottec_bot.config import config
-from bottec_bot.UI.commands import set_default_commands
+from app.bottec_bot.UI.commands import set_default_commands
 
 logging.basicConfig(level=logging.INFO)
 
