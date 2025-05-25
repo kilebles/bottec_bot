@@ -29,9 +29,10 @@ app = FastAPI(lifespan=lifespan)
 async def telegram_webhook(request: Request):
     try:
         body = await request.json()
+        logging.info(f'Incoming Telegram update: {body}')
         update = Update.model_validate(body)
         await dp.feed_update(bot, update)
         return {'ok': True}
     except Exception as e:
-        logging.exception('Error in webhook handler')
+        logging.error(f'Error in webhook: {e}')
         return {'ok': False}
