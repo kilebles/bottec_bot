@@ -13,3 +13,20 @@ services:
       --port 8080
     volumes:
       - .:/app
+    depends_on:
+      - postgres
+
+  
+  postgres:
+    image: postgres:15
+    container_name: pg_bottec
+    restart: always
+    ports:
+      - "5423:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
