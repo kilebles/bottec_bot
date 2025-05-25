@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 
-from app.bottec_bot.UI.keyboards import faq_keyboard
+from app.bottec_bot.UI.keyboards import back_to_main_keyboard, faq_keyboard
 from app.bottec_bot.data.faq_data import faq_dict  # TODO: Сейчас хардкод из data, потом поменять на БД
 
 router = Router()
@@ -13,13 +13,16 @@ async def show_faq_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith('faq_'))
-async def show_faq_answer(call: CallbackQuery):
-    key = call.data.removeprefix('faq_')
+async def show_faq_answer(callback: CallbackQuery):
+    key = callback.data.removeprefix('faq_')
     answer = faq_dict.get(key)
     if not answer:
-        await call.answer('Вопрос не найден.', show_alert=True)
+        await callback.answer('Вопрос не найден.', show_alert=True)
         return
-    await call.message.edit_text(answer['text'])
+    await callback.message.edit_text(
+        text=answer['text'],
+        reply_markup=back_to_main_keyboard()  # 👈 вот она
+    )
     
     
 @router.inline_query()

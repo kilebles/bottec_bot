@@ -13,9 +13,17 @@ def main_menu_keyboard() -> InlineKeyboardMarkup:
     
     
 def faq_keyboard() -> InlineKeyboardMarkup:
+    keyboard = [
+        [InlineKeyboardButton(text=faq_dict[key]['title'], callback_data=f'faq_{key}')]
+        for key in faq_dict
+    ]
+    keyboard.append([InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')])
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def back_to_main_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text=faq_dict[key]['title'], callback_data=f'faq_{key}')]
-            for key in faq_dict
+            [InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')]
         ]
     )

@@ -35,3 +35,11 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
         reply_markup=main_menu_keyboard(),
         parse_mode='HTML'
     )
+
+
+@router.callback_query(F.data == 'main_menu')
+async def show_main_menu(callback: CallbackQuery):
+    await callback.message.edit_text(
+        '🏠 Главное меню',
+        reply_markup=main_menu_keyboard()
+    )
