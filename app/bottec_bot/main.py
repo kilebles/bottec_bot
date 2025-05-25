@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from aiogram.types import Update
 from contextlib import asynccontextmanager
 
-from bottec_bot.dispatcher import bot, dp
+from app.bottec_bot.dispatcher import bot, dp
 from app.bottec_bot.config import config
 from app.bottec_bot.UI.commands import set_default_commands
 
