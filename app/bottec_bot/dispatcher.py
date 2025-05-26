@@ -5,6 +5,7 @@ from aiogram.client.default import DefaultBotProperties
 from app.bottec_bot.config import config
 from app.bottec_bot.handlers.user import start
 from app.bottec_bot.handlers.user import faq
+from app.bottec_bot.handlers.user import catalog
 
 bot = Bot(
     token=config.BOT_TOKEN,
@@ -14,3 +15,4 @@ dp = Dispatcher(storage=MemoryStorage())
 
 dp.include_router(start.router)
 dp.include_router(faq.router)
+dp.include_router(catalog.router)
