@@ -95,11 +95,25 @@ def subcategory_keyboard_paginated(subcategories: list, category_id: int, page: 
         item_text_getter=lambda s: s.name,
         item_id_getter=lambda s: s.id,
         back_callback=f'open_catalog',
-        back_text='◀ Назад к категориям',
+        back_text='◀ Назад',
         page_callback_prefix=f'sub_page_{category_id}'
     )
 
 
+def product_keyboard_paginated(products: list, subcategory_id: int, page: int = 1):
+    return paginate_keyboard(
+        items=products,
+        page=page,
+        page_size=5,
+        item_callback_prefix='product',
+        item_text_getter=lambda p: f'{p.title} — {p.price}₽',
+        item_id_getter=lambda p: p.id,
+        back_callback=f'sub_{subcategory_id}',
+        back_text='◀ Назад',
+        page_callback_prefix=f'product_page_{subcategory_id}'
+    )
+    
+    
 def faq_keyboard_paginated(page: int = 1):
     items = list(faq_dict.items())
 
