@@ -62,5 +62,5 @@ async def show_products_from_subcategory(callback: CallbackQuery):
 
     await callback.message.edit_text(
         text='Выберите товар:',
-        reply_markup=product_keyboard_paginated(products, subcat_id=subcat_id, page=1)
+        reply_markup=product_keyboard_paginated(products, subcategory_id=subcat_id, page=1)
     )
