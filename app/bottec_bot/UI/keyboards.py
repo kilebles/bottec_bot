@@ -100,7 +100,7 @@ def subcategory_keyboard_paginated(subcategories: list, category_id: int, page: 
     )
 
 
-def product_keyboard_paginated(products: list, subcategory_id: int, page: int = 1):
+def product_keyboard_paginated(products: list, subcategory_id: int, category_id: int, page: int = 1):
     return paginate_keyboard(
         items=products,
         page=page,
@@ -108,7 +108,7 @@ def product_keyboard_paginated(products: list, subcategory_id: int, page: int = 
         item_callback_prefix='product',
         item_text_getter=lambda p: f'{p.title} — {p.price}₽',
         item_id_getter=lambda p: p.id,
-        back_callback=f'sub_{subcategory_id}',
+        back_callback=f'cat_{category_id}',
         back_text='◀ Назад',
         page_callback_prefix=f'product_page_{subcategory_id}'
     )
