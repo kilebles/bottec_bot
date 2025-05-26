@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
+from aiogram.exceptions import TelegramBadRequest
 
 from app.bottec_bot.services.catalog import (
     get_all_categories,
@@ -22,11 +23,15 @@ async def show_categories(callback: CallbackQuery):
     )
 
 
-@router.callback_query(F.data.startswith('cat_'))
+@router.callback_query(lambda c: c.data.startswith('cat_') and not c.data.startswith('cat_page_'))
 async def show_subcategories(callback: CallbackQuery):
     cat_id = int(callback.data.split('_')[1])
     subcats = await get_subcategories_by_category(cat_id)
-    await callback.message.edit_text(
-        'Выберите подкатегорию:',
-        reply_markup=subcategory_keyboard_paginated(subcats, category_id=cat_id, page=1)
-    )
+    try:
+        await callback.message.edit_text(
+            'Выберите подкатегорию:',
+            reply_markup=subcategory_keyboard_paginated(subcats, category_id=cat_id, page=1)
+        )
+    except TelegramBadRequest as e:
+        if "message is not modified" not in str(e):
+            raise
