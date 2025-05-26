@@ -1,8 +1,10 @@
 import asyncio
+
 from app.bottec_bot.db.models import Category, Subcategory
 from app.bottec_bot.db.session import AsyncSessionLocal
 
 
+# TODO: Эту логику перенести в админку, seed.py - убрать
 async def seed_categories():
     async with AsyncSessionLocal() as session:
         categories = [

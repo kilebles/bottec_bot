@@ -1,0 +1,56 @@
+from django.contrib import admin
+
+from .models import (
+    Category,
+    Subcategory,
+    Product,
+    FAQ,
+    TelegramResource,
+    CartItem,
+    Order,
+)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
+
+
+@admin.register(Subcategory)
+class SubcategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category')
+    search_fields = ('name',)
+    list_filter = ('category',)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'subcategory', 'price')
+    search_fields = ('title',)
+    list_filter = ('subcategory',)
+
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('id', 'key', 'title')
+    search_fields = ('key', 'title')
+
+
+@admin.register(TelegramResource)
+class TelegramResourceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'link', 'tg_id')
+    search_fields = ('name', 'tg_id')
+
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'product', 'quantity')
+    list_filter = ('product',)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'address', 'payment_status')
+    list_filter = ('payment_status',)
+    search_fields = ('user_id', 'address')
