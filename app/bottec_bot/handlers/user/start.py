@@ -2,6 +2,7 @@ from aiogram import Bot
 from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.exceptions import TelegramBadRequest
 
 from app.bottec_bot.config import config
 from app.bottec_bot.UI.keyboards import main_menu_keyboard
@@ -39,7 +40,11 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
 
 @router.callback_query(F.data == 'main_menu')
 async def show_main_menu(callback: CallbackQuery):
-    await callback.message.edit_text(
-        '🏠 Главное меню',
-        reply_markup=main_menu_keyboard()
-    )
+    try:
+        await callback.message.edit_text(
+            '🏠 Главное меню',
+            reply_markup=main_menu_keyboard()
+        )
+    except TelegramBadRequest as e:
+        if 'message is not modified' not in str(e):
+            raise

@@ -112,5 +112,3 @@ def faq_keyboard_paginated(page: int = 1):
         back_callback='main_menu',
         page_callback_prefix='faq_page'
     )
-
-

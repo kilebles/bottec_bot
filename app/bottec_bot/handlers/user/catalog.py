@@ -23,6 +23,15 @@ async def show_categories(callback: CallbackQuery):
     )
 
 
+@router.callback_query(F.data.startswith('cat_page_'))
+async def show_categories_page(callback: CallbackQuery):
+    page = int(callback.data.split('_')[-1])
+    categories = await get_all_categories()
+    await callback.message.edit_reply_markup(
+        reply_markup=category_keyboard_paginated(categories, page=page)
+    )
+
+
 @router.callback_query(lambda c: c.data.startswith('cat_') and not c.data.startswith('cat_page_'))
 async def show_subcategories(callback: CallbackQuery):
     cat_id = int(callback.data.split('_')[1])
@@ -35,3 +44,6 @@ async def show_subcategories(callback: CallbackQuery):
     except TelegramBadRequest as e:
         if "message is not modified" not in str(e):
             raise
+
+
+
