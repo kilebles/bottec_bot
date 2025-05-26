@@ -14,6 +14,7 @@ from app.bottec_bot.UI.keyboards import (
     product_keyboard_paginated,
     subcategory_keyboard_paginated,
 )
+from app.bottec_bot.utils.safe import safe_edit_or_resend
 
 router = Router()
 
@@ -53,7 +54,7 @@ async def show_subcategories(callback: CallbackQuery):
 @router.callback_query(F.data.startswith('sub_'))
 async def show_products_from_subcategory(callback: CallbackQuery):
     '''
-    Отображение товаров в подкатегориях
+    Отображение товаров в подкатегории
     '''
     subcat_id = int(callback.data.split('_')[1])
     products = await get_products_by_subcategory(subcat_id)
@@ -62,9 +63,15 @@ async def show_products_from_subcategory(callback: CallbackQuery):
         await callback.answer('В этой подкатегории пока нет товаров', show_alert=True)
         return
 
-    await callback.message.edit_text(
-        text='Выберите товар:',
-        reply_markup=product_keyboard_paginated(products, subcategory_id=subcat_id, page=1)
+    await callback.message.delete()
+
+    await callback.message.answer(
+        'Выберите товар:',
+        reply_markup=product_keyboard_paginated(
+            products,
+            subcategory_id=subcat_id,
+            page=1
+        )
     )
     
 
