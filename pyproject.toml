@@ -17,6 +17,7 @@ dependencies = [
     "alembic (>=1.16.1,<2.0.0)",
     "django (>=5.2.1,<6.0.0)",
     "django-environ (>=0.12.0,<0.13.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
 ]
 
 [tool.poetry]
