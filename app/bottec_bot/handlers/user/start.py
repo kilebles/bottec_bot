@@ -40,11 +40,8 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
 
 @router.callback_query(F.data == 'main_menu')
 async def show_main_menu(callback: CallbackQuery):
-    try:
-        await callback.message.edit_text(
-            '🏠 Главное меню',
-            reply_markup=main_menu_keyboard()
-        )
-    except TelegramBadRequest as e:
-        if 'message is not modified' not in str(e):
-            raise
+    await callback.message.delete()
+    await callback.message.answer(
+        '🏠 Главное меню:',
+        reply_markup=main_menu_keyboard()
+    )
