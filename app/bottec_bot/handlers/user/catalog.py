@@ -14,7 +14,6 @@ from app.bottec_bot.UI.keyboards import (
     product_keyboard_paginated,
     subcategory_keyboard_paginated,
 )
-from app.bottec_bot.utils.safe import safe_edit_or_resend
 
 router = Router()
 
