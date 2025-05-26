@@ -94,7 +94,8 @@ def subcategory_keyboard_paginated(subcategories: list, category_id: int, page: 
         item_callback_prefix='sub',
         item_text_getter=lambda s: s.name,
         item_id_getter=lambda s: s.id,
-        back_callback=f'cat_{category_id}',
+        back_callback=f'open_catalog',
+        back_text='◀ Назад к категориям',
         page_callback_prefix=f'sub_page_{category_id}'
     )
 
