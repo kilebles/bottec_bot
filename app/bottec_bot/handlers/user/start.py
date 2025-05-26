@@ -40,6 +40,10 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
 
 @router.callback_query(F.data == 'main_menu')
 async def show_main_menu(callback: CallbackQuery):
+    '''
+    delete так как edit_text не работает + 
+    поднимает чатбота в списке чатов  наверх 
+    '''
     await callback.message.delete()
     await callback.message.answer(
         '🏠 Главное меню:',

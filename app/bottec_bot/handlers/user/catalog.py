@@ -88,6 +88,8 @@ async def show_product_detail(callback: CallbackQuery):
         f'{product.description or "Без описания"}\n\n'
         f'<b>Цена:</b> {product.price}₽'
     )
+    
+    await callback.message.delete()
 
     await callback.message.answer_photo(
         photo=product.photo_url,
