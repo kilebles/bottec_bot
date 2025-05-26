@@ -51,12 +51,9 @@ async def show_subcategories(callback: CallbackQuery):
 @router.callback_query(F.data.startswith('sub_'))
 async def show_products_from_subcategory(callback: CallbackQuery):
     '''
-    Отображение товаров в подкатегории
+    Отображение товаров в подкатегориях
     '''
-    _, subcat_id, cat_id = callback.data.split('_')
-    subcat_id = int(subcat_id)
-    cat_id = int(cat_id)
-
+    subcat_id = int(callback.data.split('_')[1])
     products = await get_products_by_subcategory(subcat_id)
 
     if not products:
@@ -65,10 +62,5 @@ async def show_products_from_subcategory(callback: CallbackQuery):
 
     await callback.message.edit_text(
         text='Выберите товар:',
-        reply_markup=product_keyboard_paginated(
-            products,
-            subcategory_id=subcat_id,
-            category_id=cat_id,
-            page=1
-        )
+        reply_markup=product_keyboard_paginated(products, subcategory_id=subcat_id, page=1)
     )
