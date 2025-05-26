@@ -85,7 +85,7 @@ async def show_product_detail(callback: CallbackQuery):
 
     text = (
         f'<b>{product.title}</b>\n\n'
-        f'<blockquote expandable>{product.description or "Без описания"}<blockquote>\n\n'
+        f'<blockquote expandable>{product.description or "Без описания"}</blockquote>\n\n'
         f'<b>Цена:</b> {product.price}₽'
     )
     
