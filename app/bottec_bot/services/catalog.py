@@ -24,3 +24,11 @@ async def get_products_by_subcategory(subcategory_id: int):
             select(Product).where(Product.subcategory_id == subcategory_id)
         )
         return result.scalars().all()
+    
+    
+async def get_product_by_id(product_id: int) -> Product | None:
+    async with get_session() as session:
+        result = await session.execute(
+            select(Product).where(Product.id == product_id)
+        )
+        return result.scalar_one_or_none()

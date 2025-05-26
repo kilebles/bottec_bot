@@ -4,11 +4,13 @@ from aiogram.exceptions import TelegramBadRequest
 
 from app.bottec_bot.services.catalog import (
     get_all_categories,
+    get_product_by_id,
     get_products_by_subcategory,
     get_subcategories_by_category,
 )
 from app.bottec_bot.UI.keyboards import (
     category_keyboard_paginated,
+    product_detail_keyboard,
     product_keyboard_paginated,
     subcategory_keyboard_paginated,
 )
@@ -63,4 +65,30 @@ async def show_products_from_subcategory(callback: CallbackQuery):
     await callback.message.edit_text(
         text='Выберите товар:',
         reply_markup=product_keyboard_paginated(products, subcategory_id=subcat_id, page=1)
+    )
+    
+
+@router.callback_query(F.data.startswith('product_'))
+async def show_product_detail(callback: CallbackQuery):
+    product_id = int(callback.data.split('_')[1])
+    product = await get_product_by_id(product_id)
+
+    if not product:
+        await callback.answer('Товар не найден', show_alert=True)
+        return
+
+    text = (
+        f'<b>{product.title}</b>\n\n'
+        f'{product.description or "Без описания"}\n\n'
+        f'<b>Цена:</b> {product.price}₽'
+    )
+
+    await callback.message.answer_photo(
+        photo=product.photo_url,
+        caption=text,
+        parse_mode='HTML',
+        reply_markup=product_detail_keyboard(
+            subcategory_id=product.subcategory_id,
+            product_id=product.id
+        )
     )

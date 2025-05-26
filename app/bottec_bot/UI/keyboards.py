@@ -19,6 +19,27 @@ def back_to_main_keyboard() -> InlineKeyboardMarkup:
             [InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')]
         ]
     )
+    
+
+def product_detail_keyboard(subcategory_id: int, product_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+           InlineKeyboardButton(
+                text='🧺 Добавить в корзину',
+                callback_data=f'add_to_cart_{product_id}'
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text='◀ Назад к товарам',
+                callback_data=f'sub_{subcategory_id}'
+            ),
+             InlineKeyboardButton(
+                text='🏠 Главное меню',
+                callback_data='main_menu'
+            )
+        ],
+    ])
 
 
 def paginate_keyboard(
