@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.fsm.context import FSMContext
 
 from app.bottec_bot.services.catalog import (
     get_all_categories,
@@ -14,6 +15,8 @@ from app.bottec_bot.UI.keyboards import (
     product_keyboard_paginated,
     subcategory_keyboard_paginated,
 )
+
+from app.bottec_bot.states import CartStates
 
 router = Router()
 
@@ -100,3 +103,11 @@ async def show_product_detail(callback: CallbackQuery):
             product_id=product.id
         )
     )
+    
+
+@router.callback_query(F.data.startswith('add_to_cart_'))
+async def ask_quantity(callback: CallbackQuery, state: FSMContext):
+    product_id = int(callback.data.split('_')[-1])
+    await state.update_data(product_id=product_id)
+    await state.set_state(CartStates.waiting_for_quantity)
+    await callback.message.answer('Введите количество товара:')

@@ -6,6 +6,7 @@ from app.bottec_bot.config import config
 from app.bottec_bot.handlers.user import start
 from app.bottec_bot.handlers.user import faq
 from app.bottec_bot.handlers.user import catalog
+from app.bottec_bot.handlers.user import cart
 
 bot = Bot(
     token=config.BOT_TOKEN,
@@ -16,3 +17,4 @@ dp = Dispatcher(storage=MemoryStorage())
 dp.include_router(start.router)
 dp.include_router(faq.router)
 dp.include_router(catalog.router)
+dp.include_router(cart.router)

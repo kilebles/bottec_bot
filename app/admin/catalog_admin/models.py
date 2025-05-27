@@ -23,8 +23,8 @@ class TelegramResource(models.Model):
     class Meta:
         db_table = 'telegram_resources'
         managed = False
-        verbose_name = 'Ресурс Telegram'
-        verbose_name_plural = 'Ресурсы Telegram'
+        verbose_name = 'Обязательное сообщество'
+        verbose_name_plural = 'Обязательные сообщества'
 
     def __str__(self):
         return self.name
