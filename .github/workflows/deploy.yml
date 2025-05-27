@@ -30,7 +30,8 @@ jobs:
         run: |
           ssh $USER@$HOST "
             cd $DEPLOY_PATH && \
-            git pull origin master && \
+            git fetch origin && \
+            git reset --hard origin/master && \
             echo '$DOCKERHUB_TOKEN' | docker login -u '$DOCKERHUB_USER' --password-stdin && \
             docker compose down && \
             docker compose up -d --build
