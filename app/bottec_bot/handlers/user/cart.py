@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
+from app.bottec_bot.utils.payment import create_yoomoney_payment
 from app.bottec_bot.states import CartStates, OrderStates
 from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard, order_payment_keyboard
 from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart, render_cart
