@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from math import ceil
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from app.bottec_bot.data.faq_data import faq_dict
+from bottec_bot.db.models import FAQ
 
 
 def main_menu_keyboard() -> InlineKeyboardMarkup:
@@ -135,16 +135,14 @@ def product_keyboard_paginated(products: list, subcategory_id: int, page: int = 
     )
     
     
-def faq_keyboard_paginated(page: int = 1):
-    items = list(faq_dict.items())
-
+def faq_keyboard_paginated(faqs: list[FAQ], page: int = 1):
     return paginate_keyboard(
-        items=items,
+        items=faqs,
         page=page,
         page_size=5,
         item_callback_prefix='faq',
-        item_text_getter=lambda item: item[1]['title'],
-        item_id_getter=lambda item: item[0],
+        item_text_getter=lambda faq: faq.title,
+        item_id_getter=lambda faq: faq.key,
         back_callback='main_menu',
         page_callback_prefix='faq_page'
     )
