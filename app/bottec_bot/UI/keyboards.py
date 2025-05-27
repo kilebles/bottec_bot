@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from math import ceil
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from bottec_bot.db.models import FAQ
+from app.bottec_bot.db.models import FAQ
 
 
 def main_menu_keyboard() -> InlineKeyboardMarkup:
