@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 
 from app.bottec_bot.states import CartStates
 from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard
-from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart
+from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart, render_cart
 
 router = Router()
 
@@ -30,23 +30,18 @@ async def save_to_cart(message: Message, state: FSMContext):
     await message.answer('🧺 Товар добавлен в корзину', reply_markup=main_menu_keyboard())
 
 
-@router.callback_query(F.data == 'open_cart')
+
+
+@router.callback_query(F.data.startswith('open_cart'))
 async def show_cart(callback: CallbackQuery):
-    tg_id = callback.from_user.id
-    cart_items = await get_cart_items(tg_id)
+    page = 1
+    if '_' in callback.data:
+        try:
+            page = int(callback.data.split('_')[-1])
+        except ValueError:
+            pass
 
-    if not cart_items:
-        await callback.message.answer('🧺 Ваша корзина пуста', reply_markup=main_menu_keyboard())
-        return
-
-    text_lines = ['🧾 <b>Содержимое корзины:</b>\n']
-    for item in cart_items:
-        text_lines.append(f'• <b>{item.product.title}</b> — {item.quantity} шт. — {item.product.price * item.quantity}₽\n'
-                          f'/remove_{item.id}')
-    total = sum(item.product.price * item.quantity for item in cart_items)
-    text_lines.append(f'\n<b>Итого:</b> {total}₽')
-
-    await callback.message.answer('\n'.join(text_lines), reply_markup=main_menu_keyboard())
+    await render_cart(callback, page)
 
 
 @router.message(F.text.startswith('/remove_'))
@@ -54,6 +49,14 @@ async def remove_item(message: Message):
     try:
         item_id = int(message.text.split('_')[-1])
         await remove_from_cart(item_id)
-        await message.answer('❌ Товар удалён из корзины')
+
+        class DummyCallback:
+            def __init__(self, message, user):
+                self.message = message
+                self.from_user = user
+
+        fake_callback = DummyCallback(message=message, user=message.from_user)
+        await render_cart(fake_callback, page=1)
+
     except ValueError:
         await message.answer('Некорректный ID товара')

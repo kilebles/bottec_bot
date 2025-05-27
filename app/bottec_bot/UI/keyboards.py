@@ -8,7 +8,7 @@ from app.bottec_bot.db.models import FAQ
 def main_menu_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='🛍 Каталог', callback_data='open_catalog')],
-        [InlineKeyboardButton(text='🧺 Корзина', callback_data='open_cart')],
+        [InlineKeyboardButton(text='🧺 Корзина', callback_data='open_cart_1')],
         [InlineKeyboardButton(text='❓ FAQ', callback_data='faq_main')]
     ])
     
