@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from aiogram.types import User as TelegramUser
 from sqlalchemy import select
 
 from app.bottec_bot.db.models import TelegramResource, User
