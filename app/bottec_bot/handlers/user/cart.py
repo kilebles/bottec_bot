@@ -58,7 +58,6 @@ async def ask_address(callback: CallbackQuery, state: FSMContext):
     await state.set_state(OrderStates.waiting_for_address)
     await callback.message.edit_text(
         '📍 Пожалуйста, введите адрес доставки:',
-        reply_markup=back_to_main_keyboard()
     )
     
 
@@ -68,7 +67,7 @@ async def receive_address(message: Message, state: FSMContext):
     await state.clear()
 
     await message.answer(
-        f'📦 Ваш заказ оформлен!\n\n🚚 Адрес доставки: <b>{address}</b>\n\nНажмите "Оплатить" для завершения.',
+        f'📦 Ваш заказ оформлен!\n\n🚚 Адрес доставки: <b>{address}</b>',
         reply_markup=order_confirmation_keyboard(),
         parse_mode='HTML'
     )
