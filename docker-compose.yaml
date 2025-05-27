@@ -12,6 +12,7 @@ services:
       - ./nginx/certs:/etc/nginx/certs
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/log:/var/log/nginx
+      - ./staticfiles:/app/staticfiles
     depends_on:
       - bottec_bot
       - django_admin
@@ -78,6 +79,7 @@ services:
       - .env
     volumes:
       - .:/app
+      - ./staticfiles:/app/staticfiles
     depends_on:
       - postgres
 
