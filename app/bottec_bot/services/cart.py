@@ -83,23 +83,23 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
     keyboard = []
     for item in current_items:
         keyboard.append([InlineKeyboardButton(
-            text=f'Delete “{item.product.title[:20]}”',
+            text=f'❌ Удалить “{item.product.title[:20]}”',
             callback_data=f'remove_cart_item_{item.id}'
         )])
 
     nav_buttons = []
     if page > 1:
-        nav_buttons.append(InlineKeyboardButton(text='◀ Back', callback_data=f'open_cart_{page - 1}'))
+        nav_buttons.append(InlineKeyboardButton(text='◀ Назад', callback_data=f'open_cart_{page - 1}'))
     if page < total_pages:
-        nav_buttons.append(InlineKeyboardButton(text='Next ▶', callback_data=f'open_cart_{page + 1}'))
+        nav_buttons.append(InlineKeyboardButton(text='Вперед ▶', callback_data=f'open_cart_{page + 1}'))
     if nav_buttons:
         keyboard.append(nav_buttons)
 
     keyboard.append([
-        InlineKeyboardButton(text='Checkout', callback_data='start_order')
+        InlineKeyboardButton(text='🚚 Заказать', callback_data='start_order')
     ])
     keyboard.append([
-        InlineKeyboardButton(text='Main menu', callback_data='main_menu')
+        InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')
     ])
 
     await callback.message.edit_text(
