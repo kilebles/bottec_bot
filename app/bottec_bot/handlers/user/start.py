@@ -1,10 +1,12 @@
-from aiogram import Bot
-from aiogram import Router, F
+from aiogram import Bot, Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 from app.bottec_bot.services.start import get_or_create_user, get_required_resources
 from app.bottec_bot.UI.keyboards import main_menu_keyboard
+from app.bottec_bot.logging.setup import loggers
+
+logger = loggers['bot']
 
 router = Router()
 
@@ -12,12 +14,17 @@ router = Router()
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     from_user = message.from_user
+    user_id = from_user.id
 
     await get_or_create_user(from_user)
+    logger.info(f'User started bot: id={user_id}, username={from_user.username}')
+
     resources = await get_required_resources()
+    logger.debug(f'{len(resources)} subscription resources loaded for user {user_id}')
 
     if not resources:
         await message.answer('⚠️ Нет ресурсов для подписки.')
+        logger.warning(f'No subscription resources available for user {user_id}')
         return
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -35,6 +42,7 @@ async def cmd_start(message: Message):
 async def check_subscription(callback: CallbackQuery, bot: Bot):
     user_id = callback.from_user.id
     resources = await get_required_resources()
+    logger.debug(f'Checking subscription for user {user_id}, {len(resources)} resources')
 
     for res in resources:
         try:
@@ -42,9 +50,11 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
             if member.status in ('left', 'kicked'):
                 raise ValueError()
         except Exception:
+            logger.info(f'User {user_id} is not subscribed to {res.name} ({res.tg_id})')
             await callback.answer('❌ Подпишитесь на все сообщества.', show_alert=True)
             return
 
+    logger.info(f'User {user_id} passed subscription check')
     await callback.message.edit_text(
         '🏠 Главное меню',
         reply_markup=main_menu_keyboard(),
@@ -54,10 +64,9 @@ async def check_subscription(callback: CallbackQuery, bot: Bot):
 
 @router.callback_query(F.data == 'main_menu')
 async def show_main_menu(callback: CallbackQuery):
-    '''
-    delete так как edit_text не работает + 
-    поднимает чатбота в списке чатов  наверх 
-    '''
+    user_id = callback.from_user.id
+    logger.debug(f'User {user_id} opened main menu')
+
     await callback.message.delete()
     await callback.message.answer(
         '🏠 Главное меню:',
