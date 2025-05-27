@@ -20,6 +20,12 @@ def back_to_main_keyboard() -> InlineKeyboardMarkup:
         ]
     )
     
+def order_confirmation_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='💳 Оплатить', callback_data='pay_order')],
+        [InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')]
+    ])
+
 
 def product_detail_keyboard(subcategory_id: int, product_id: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[

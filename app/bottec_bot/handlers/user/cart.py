@@ -2,9 +2,9 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
-from app.bottec_bot.states import CartStates
-from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard
-from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart, render_cart
+from app.bottec_bot.states import CartStates, OrderStates
+from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard, order_confirmation_keyboard
+from app.bottec_bot.services.cart import add_to_cart, remove_from_cart, render_cart
 
 router = Router()
 
@@ -51,3 +51,24 @@ async def handle_remove_item(callback: CallbackQuery):
         await render_cart(callback, page=1)
     except Exception:
         await callback.answer('Ошибка при удалении', show_alert=True)
+        
+
+@router.callback_query(F.data == 'start_order')
+async def ask_address(callback: CallbackQuery, state: FSMContext):
+    await state.set_state(OrderStates.waiting_for_address)
+    await callback.message.edit_text(
+        '📍 Пожалуйста, введите адрес доставки:',
+        reply_markup=back_to_main_keyboard()
+    )
+    
+
+@router.message(OrderStates.waiting_for_address)
+async def receive_address(message: Message, state: FSMContext):
+    address = message.text
+    await state.clear()
+
+    await message.answer(
+        f'📦 Ваш заказ оформлен!\n\n🚚 Адрес доставки: <b>{address}</b>\n\nНажмите "Оплатить" для завершения.',
+        reply_markup=order_confirmation_keyboard(),
+        parse_mode='HTML'
+    )

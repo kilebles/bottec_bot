@@ -60,7 +60,7 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
     text_lines = ['🧾 <b>Содержимое корзины:</b>\n']
     for item in current_items:
         text_lines.append(
-            f'• <b>{item.product.title}</b> — {item.quantity} шт. — {item.product.price * item.quantity:.2f}₽\n\n'
+            f'• <b>{item.product.title}</b> — {item.quantity} шт. — {item.product.price * item.quantity:.2f}₽\n'
         )
     total = sum(item.product.price * item.quantity for item in cart_items)
     text_lines.append(f'\n<b>К оплате:</b> {total:.2f}₽')
@@ -82,10 +82,16 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
     if nav_buttons:
         keyboard.append(nav_buttons)
 
-    keyboard.append([InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')])
+    keyboard.append([
+        InlineKeyboardButton(text='🛒 Заказать', callback_data='start_order')
+    ])
+    keyboard.append([
+        InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')
+    ])
 
     await callback.message.edit_text(
         '\n'.join(text_lines),
         parse_mode='HTML',
         reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard)
     )
+    
