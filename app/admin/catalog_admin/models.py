@@ -1,15 +1,15 @@
 from django.db import models
 
-# Create your models here.
-
 
 class User(models.Model):
     id = models.BigIntegerField(primary_key=True)  # Telegram ID
     username = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'Пользователи'
+        db_table = 'users'
         managed = False
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.username or str(self.id)
@@ -19,11 +19,12 @@ class TelegramResource(models.Model):
     name = models.CharField(max_length=255)
     link = models.URLField()
     tg_id = models.BigIntegerField()
-    
-    class Meta:
-        db_table = 'Сообщества для подписки'
-        managed = False
 
+    class Meta:
+        db_table = 'telegram_resources'
+        managed = False
+        verbose_name = 'Ресурс Telegram'
+        verbose_name_plural = 'Ресурсы Telegram'
 
     def __str__(self):
         return self.name
@@ -33,11 +34,12 @@ class FAQ(models.Model):
     key = models.CharField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     text = models.TextField()
-    
-    class Meta:
-        db_table = 'FAQs'
-        managed = False
 
+    class Meta:
+        db_table = 'faqs'
+        managed = False
+        verbose_name = 'Частый вопрос'
+        verbose_name_plural = 'Частые вопросы'
 
     def __str__(self):
         return self.title
@@ -45,10 +47,12 @@ class FAQ(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    
+
     class Meta:
-        db_table = 'Категории'
+        db_table = 'categories'
         managed = False
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -57,10 +61,12 @@ class Category(models.Model):
 class Subcategory(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
-    
+
     class Meta:
-        db_table = 'Подкатегории'
+        db_table = 'subcategories'
         managed = False
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Подкатегории'
 
     def __str__(self):
         return self.name
@@ -72,11 +78,12 @@ class Product(models.Model):
     photo_url = models.URLField(blank=True)
     price = models.PositiveIntegerField()
     subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.CASCADE)
-    
-    class Meta:
-        db_table = 'Товары'
-        managed = False
 
+    class Meta:
+        db_table = 'products'
+        managed = False
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def __str__(self):
         return self.title
@@ -86,11 +93,12 @@ class CartItem(models.Model):
     user_id = models.BigIntegerField()
     product = models.ForeignKey(Product, related_name='cart_items', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    
-    class Meta:
-        db_table = 'Корзина'
-        managed = False
 
+    class Meta:
+        db_table = 'cart_items'
+        managed = False
+        verbose_name = 'Позиция в корзине'
+        verbose_name_plural = 'Корзина'
 
     def __str__(self):
         return f'{self.quantity} × {self.product.title}'
@@ -98,19 +106,20 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     PAYMENT_CHOICES = [
-        ('pending', 'Pending'),
-        ('paid', 'Paid'),
-        ('failed', 'Failed'),
+        ('pending', 'Ожидает'),
+        ('paid', 'Оплачен'),
+        ('failed', 'Ошибка'),
     ]
 
     user_id = models.BigIntegerField()
     address = models.CharField(max_length=255)
     payment_status = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='pending')
-    
-    class Meta:
-        db_table = 'Заказы'
-        managed = False
 
+    class Meta:
+        db_table = 'orders'
+        managed = False
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
 
     def __str__(self):
-        return f'Order #{self.pk} — {self.payment_status}'
+        return f'Заказ #{self.pk} — {self.payment_status}'
