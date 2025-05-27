@@ -107,7 +107,12 @@ async def show_product_detail(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith('add_to_cart_'))
 async def ask_quantity(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+
     product_id = int(callback.data.split('_')[-1])
     await state.update_data(product_id=product_id)
     await state.set_state(CartStates.waiting_for_quantity)
+
+    await callback.message.delete()
+
     await callback.message.answer('Введите количество товара:')

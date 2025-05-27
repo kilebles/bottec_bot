@@ -1,4 +1,3 @@
-
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
@@ -8,6 +7,7 @@ from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboar
 from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart
 
 router = Router()
+
 
 @router.callback_query(F.data.startswith('add_to_cart_'))
 async def ask_quantity(callback: CallbackQuery, state: FSMContext):
