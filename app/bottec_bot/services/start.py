@@ -1,8 +1,7 @@
-from bottec_bot.db.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from admin.catalog_admin.models import TelegramResource
+from app.bottec_bot.db.models import TelegramResource, User
 
 
 async def get_or_create_user(session: AsyncSession, tg_user: TelegramUser) -> User:
