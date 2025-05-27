@@ -32,6 +32,12 @@ config.set_main_option('sqlalchemy.url', DATABASE_URL)
 target_metadata = Base.metadata
 
 
+def include_object(object, name, type_, reflected, compare_to):
+    if type_ == "table" and name.startswith(("auth_", "django_", "admin_")):
+        return False
+    return True
+
+
 def run_migrations_offline():
     """Запуск миграций в offline-режиме."""
     context.configure(
@@ -64,6 +70,7 @@ def do_run_migrations(connection: Connection):
         connection=connection,
         target_metadata=target_metadata,
         compare_type=True
+        include_object=include_object,
     )
 
     with context.begin_transaction():
