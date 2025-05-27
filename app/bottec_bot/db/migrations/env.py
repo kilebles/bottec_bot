@@ -69,7 +69,7 @@ def do_run_migrations(connection: Connection):
     context.configure(
         connection=connection,
         target_metadata=target_metadata,
-        compare_type=True
+        compare_type=True,
         include_object=include_object,
     )
 
