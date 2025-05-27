@@ -8,7 +8,7 @@ class User(models.Model):
     username = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'users'
+        db_table = 'Пользователи'
         managed = False
 
     def __str__(self):
@@ -21,7 +21,7 @@ class TelegramResource(models.Model):
     tg_id = models.BigIntegerField()
     
     class Meta:
-        db_table = 'telegram_resources'
+        db_table = 'Сообщества для подписки'
         managed = False
 
 
@@ -35,7 +35,7 @@ class FAQ(models.Model):
     text = models.TextField()
     
     class Meta:
-        db_table = 'faqs'
+        db_table = 'FAQs'
         managed = False
 
 
@@ -47,7 +47,7 @@ class Category(models.Model):
     name = models.CharField(max_length=255)
     
     class Meta:
-        db_table = 'categories'
+        db_table = 'Категории'
         managed = False
 
     def __str__(self):
@@ -59,7 +59,7 @@ class Subcategory(models.Model):
     category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
     
     class Meta:
-        db_table = 'subcategories'
+        db_table = 'Подкатегории'
         managed = False
 
     def __str__(self):
@@ -74,7 +74,7 @@ class Product(models.Model):
     subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.CASCADE)
     
     class Meta:
-        db_table = 'products'
+        db_table = 'Товары'
         managed = False
 
 
@@ -88,7 +88,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField()
     
     class Meta:
-        db_table = 'cart_items'
+        db_table = 'Корзина'
         managed = False
 
 
@@ -108,7 +108,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='pending')
     
     class Meta:
-        db_table = 'orders'
+        db_table = 'Заказы'
         managed = False
 
 
