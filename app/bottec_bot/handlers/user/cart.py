@@ -30,8 +30,6 @@ async def save_to_cart(message: Message, state: FSMContext):
     await message.answer('🧺 Товар добавлен в корзину', reply_markup=main_menu_keyboard())
 
 
-
-
 @router.callback_query(F.data.startswith('open_cart'))
 async def show_cart(callback: CallbackQuery):
     page = 1
@@ -44,19 +42,12 @@ async def show_cart(callback: CallbackQuery):
     await render_cart(callback, page)
 
 
-@router.message(F.text.startswith('/remove_'))
-async def remove_item(message: Message):
+@router.callback_query(F.data.startswith('remove_cart_item_'))
+async def handle_remove_item(callback: CallbackQuery):
     try:
-        item_id = int(message.text.split('_')[-1])
+        item_id = int(callback.data.split('_')[-1])
         await remove_from_cart(item_id)
-
-        class DummyCallback:
-            def __init__(self, message, user):
-                self.message = message
-                self.from_user = user
-
-        fake_callback = DummyCallback(message=message, user=message.from_user)
-        await render_cart(fake_callback, page=1)
-
-    except ValueError:
-        await message.answer('Некорректный ID товара')
+        await callback.answer('❌ Товар удалён')
+        await render_cart(callback, page=1)
+    except Exception:
+        await callback.answer('Ошибка при удалении', show_alert=True)

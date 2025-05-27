@@ -60,13 +60,19 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
     text_lines = ['🧾 <b>Содержимое корзины:</b>\n']
     for item in current_items:
         text_lines.append(
-            f'• <b>{item.product.title}</b> — {item.quantity} шт. — {item.product.price * item.quantity}₽\n'
-            f'/remove_{item.id}'
+            f'• <b>{item.product.title}</b> — {item.quantity} шт. — {item.product.price * item.quantity:.2f}₽'
         )
     total = sum(item.product.price * item.quantity for item in cart_items)
-    text_lines.append(f'\n<b>Итого:</b> {total}₽')
+    text_lines.append(f'\n<b>К оплате:</b> {total:.2f}₽')
 
     keyboard = []
+    for item in current_items:
+        keyboard.append([
+            InlineKeyboardButton(
+                text=f'❌ Удалить «{item.product.title[:20]}»',
+                callback_data=f'remove_cart_item_{item.id}'
+            )
+        ])
 
     nav_buttons = []
     if page > 1:
