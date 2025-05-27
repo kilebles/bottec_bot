@@ -3,10 +3,22 @@ from django.db import models
 # Create your models here.
 
 
+class User(models.Model):
+    id = models.BigIntegerField(primary_key=True)  # Telegram ID
+    username = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        db_table = 'users'
+        managed = False
+
+    def __str__(self):
+        return self.username or str(self.id)
+
+
 class TelegramResource(models.Model):
     name = models.CharField(max_length=255)
     link = models.URLField()
-    tg_id = models.CharField(max_length=255)
+    tg_id = models.BigIntegerField()
     
     class Meta:
         db_table = 'telegram_resources'
@@ -71,7 +83,7 @@ class Product(models.Model):
 
 
 class CartItem(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.BigIntegerField()
     product = models.ForeignKey(Product, related_name='cart_items', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     
@@ -91,7 +103,7 @@ class Order(models.Model):
         ('failed', 'Failed'),
     ]
 
-    user_id = models.IntegerField()
+    user_id = models.BigIntegerField()
     address = models.CharField(max_length=255)
     payment_status = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='pending')
     

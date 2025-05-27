@@ -8,7 +8,14 @@ from .models import (
     TelegramResource,
     CartItem,
     Order,
+    User,
 )
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username')
+    search_fields = ('username',)
 
 
 @admin.register(Category)
