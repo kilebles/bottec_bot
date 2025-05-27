@@ -1,4 +1,5 @@
 from sqlalchemy import select, delete
+from sqlalchemy.orm import joinedload
 
 from app.bottec_bot.db.models import CartItem
 from app.bottec_bot.db.repo import get_session
@@ -20,12 +21,16 @@ async def add_to_cart(user_id: int, product_id: int, quantity: int):
             session.add(item)
 
 
+
 async def get_cart_items(user_id: int):
     async with get_session() as session:
         result = await session.execute(
-            select(CartItem).where(CartItem.user_id == user_id)
+            select(CartItem)
+            .where(CartItem.user_id == user_id)
+            .options(joinedload(CartItem.product))
         )
         return result.scalars().all()
+
 
 
 async def remove_from_cart(cart_item_id: int):
