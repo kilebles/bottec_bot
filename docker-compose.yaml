@@ -1,5 +1,4 @@
 services:
-
   nginx:
     image: nginx:alpine
     container_name: nginx_proxy
@@ -16,7 +15,6 @@ services:
     depends_on:
       - bottec_bot
       - django_admin
-
 
   certbot:
     image: certbot/certbot
@@ -43,7 +41,6 @@ services:
     depends_on:
       - postgres
 
-  
   postgres:
     image: postgres:15
     container_name: pg_bottec
@@ -55,7 +52,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  
   migrate:
     build: .
     container_name: bottec_migrations
@@ -66,7 +62,6 @@ services:
       - .env
     volumes:
       - .:/app
-
 
   django_admin:
     build: .

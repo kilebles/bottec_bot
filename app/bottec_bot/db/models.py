@@ -1,7 +1,15 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.bottec_bot.db.session import Base
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(BigInteger, primary_key=True)  # tg_id
+    username = Column(String)
+
 
 class TelegramResource(Base):
     __tablename__ = 'telegram_resources'
@@ -9,7 +17,7 @@ class TelegramResource(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     link = Column(String, nullable=False)
-    tg_id = Column(String, nullable=False)
+    tg_id = Column(BigInteger, nullable=False)
     
 
 class FAQ(Base):
@@ -55,7 +63,7 @@ class CartItem(Base):
     __tablename__ = 'cart_items'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)  # tg_id
     product_id = Column(Integer, ForeignKey('products.id'))
     quantity = Column(Integer, nullable=False)
 
@@ -66,6 +74,6 @@ class Order(Base):
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)  # tg_id
     address = Column(String, nullable=False)
     payment_status = Column(String, default='pending')  # 'pending', 'paid', 'failed'
