@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-zo6e*k)d)9rny(bsbk^$wl)cn-^xun1pfs5kg*(g%n#lpvi%7a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["bottec.fujida.space"]
 
 
 # Application definition
@@ -131,3 +131,4 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CSRF_TRUSTED_ORIGINS = ['https://bottec.fujida.space']
