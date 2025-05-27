@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
     
+    YOOKASSA_ID: int
+    YOOKASSA_KEY: str
+    
     model_config = SettingsConfigDict(env_file='.env')
     
 

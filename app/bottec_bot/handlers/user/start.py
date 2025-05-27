@@ -3,7 +3,6 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-from app.bottec_bot.db.repo import get_session
 from app.bottec_bot.services.start import get_or_create_user, get_required_resources
 from app.bottec_bot.UI.keyboards import main_menu_keyboard
 

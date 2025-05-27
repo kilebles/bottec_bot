@@ -1,12 +1,13 @@
 import logging
 
-from fastapi import FastAPI, Request
-from aiogram.types import Update
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from app.bottec_bot.dispatcher import bot, dp
+from app.bottec_bot.dispatcher import bot
 from app.bottec_bot.config import config
 from app.bottec_bot.UI.commands import set_default_commands
+from app.bottec_bot.handlers.yookassa_webhook import router as yookassa_router
+from app.bottec_bot.handlers.telegram_webhook import router as telegram_router
 
 logging.basicConfig(level=logging.INFO)
 
@@ -24,14 +25,5 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
-@app.post('/webhook')
-async def telegram_webhook(request: Request):
-    try:
-        body = await request.json()
-        update = Update.model_validate(body)
-        await dp.feed_update(bot, update)
-        return {'ok': True}
-    except Exception as e:
-        logging.error(f'Error in webhook: {e}')
-        return {'ok': False}
+app.include_router(telegram_router)
+app.include_router(yookassa_router)

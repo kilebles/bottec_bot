@@ -20,10 +20,11 @@ def back_to_main_keyboard() -> InlineKeyboardMarkup:
         ]
     )
     
-def order_confirmation_keyboard() -> InlineKeyboardMarkup:
+    
+def order_payment_keyboard(payment_url: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='💳 Оплатить', callback_data='pay_order')],
-        [InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')]
+        [InlineKeyboardButton(text='💳 Оплатить', url=payment_url)],
+        [InlineKeyboardButton(text='🏠 Главное меню', callback_data='main_menu')],
     ])
 
 

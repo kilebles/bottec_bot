@@ -2,7 +2,6 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery, InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 
 from app.bottec_bot.UI.keyboards import back_to_main_keyboard, faq_keyboard_paginated
-from app.bottec_bot.db.repo import get_session
 from app.bottec_bot.services.faq import get_faq_by_key, get_all_faqs
 
 router = Router()

@@ -3,8 +3,8 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
 from app.bottec_bot.states import CartStates, OrderStates
-from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard, order_confirmation_keyboard
-from app.bottec_bot.services.cart import add_to_cart, remove_from_cart, render_cart
+from app.bottec_bot.UI.keyboards import main_menu_keyboard, back_to_main_keyboard, order_payment_keyboard
+from app.bottec_bot.services.cart import add_to_cart, get_cart_items, remove_from_cart, render_cart
 
 router = Router()
 
@@ -66,8 +66,20 @@ async def receive_address(message: Message, state: FSMContext):
     address = message.text
     await state.clear()
 
+    tg_id = message.from_user.id
+    cart_items = await get_cart_items(tg_id)
+    total = sum(item.product.price * item.quantity for item in cart_items)
+
+    payment = await create_yoomoney_payment(
+        value=f'{total:.2f}',
+        description='Оплата заказа',
+        tg_id=tg_id
+    )
+
+    url = payment['confirmation']['confirmation_url']
+
     await message.answer(
-        f'📦 Ваш заказ оформлен!\n\n🚚 Адрес доставки: <b>{address}</b>',
-        reply_markup=order_confirmation_keyboard(),
+        f'📦 Ваш заказ оформлен!\n\n🚚 Адрес доставки: <b>{address}</b>\n💰 К оплате: <b>{total:.2f}₽</b>',
+        reply_markup=order_payment_keyboard(url),
         parse_mode='HTML'
     )
