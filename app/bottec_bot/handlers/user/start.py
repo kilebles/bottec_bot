@@ -14,9 +14,8 @@ router = Router()
 async def cmd_start(message: Message):
     from_user = message.from_user
 
-    async with get_session() as session:
-        await get_or_create_user(from_user)
-        resources = await get_required_resources()
+    await get_or_create_user(from_user)
+    resources = await get_required_resources()
 
     if not resources:
         await message.answer('⚠️ Нет ресурсов для подписки.')
@@ -36,9 +35,7 @@ async def cmd_start(message: Message):
 @router.callback_query(F.data == 'check_subscription')
 async def check_subscription(callback: CallbackQuery, bot: Bot):
     user_id = callback.from_user.id
-
-    async with get_session() as session:
-        resources = await get_required_resources()
+    resources = await get_required_resources()
 
     for res in resources:
         try:
