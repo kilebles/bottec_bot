@@ -1,4 +1,4 @@
-import asyncio
+from asgiref.sync import async_to_sync
 
 from app.bottec_bot.dispatcher import bot
 from app.bottec_bot.db.models import User
@@ -17,4 +17,4 @@ async def send_broadcast_async(broadcast_id: int):
 
 
 def send_broadcast_message(broadcast_id: int):
-    asyncio.run(send_broadcast_async(broadcast_id))
+    async_to_sync(send_broadcast_async)(broadcast_id)
