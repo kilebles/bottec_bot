@@ -59,7 +59,7 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
 
     if not cart_items:
         logger.debug(f'User {tg_id} opened empty cart')
-        await callback.message.edit_text('🧺 Your cart is empty', reply_markup=main_menu_keyboard())
+        await callback.message.edit_text('🧺 Ваша корзина пуста', reply_markup=main_menu_keyboard())
         return
 
     PAGE_SIZE = 3
@@ -72,13 +72,13 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
         f'Rendering cart for user_id={tg_id}, page={page}/{total_pages}, items_on_page={len(current_items)}'
     )
 
-    text_lines = ['🧾 <b>Your cart:</b>\n']
+    text_lines = ['🧾 <b>Ваша корзина:</b>\n']
     for item in current_items:
         text_lines.append(
-            f'• <b>{item.product.title}</b> — {item.quantity} pcs — {item.product.price * item.quantity:.2f}₽\n'
+            f'• <blockquote>{item.product.title}</<blockquote> — {item.quantity} шт. — {item.product.price * item.quantity:.2f}₽\n'
         )
     total = sum(item.product.price * item.quantity for item in cart_items)
-    text_lines.append(f'\n<b>Total:</b> {total:.2f}₽')
+    text_lines.append(f'\n<b>К оплате:</b> {total:.2f}₽')
 
     keyboard = []
     for item in current_items:
