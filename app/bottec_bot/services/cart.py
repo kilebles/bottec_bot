@@ -75,7 +75,7 @@ async def render_cart(callback: CallbackQuery, page: int = 1):
     text_lines = ['🧾 <b>Ваша корзина:</b>\n']
     for item in current_items:
         text_lines.append(
-            f'• <blockquote>{item.product.title}</blockquote> — {item.quantity} шт. — {item.product.price * item.quantity:.2f}₽\n'
+            f'<blockquote>🗑 {item.product.title}</blockquote>  {item.quantity} шт. 💵 {item.product.price * item.quantity:.2f}₽\n'
         )
     total = sum(item.product.price * item.quantity for item in cart_items)
     text_lines.append(f'\n<b>К оплате:</b> {total:.2f}₽')
