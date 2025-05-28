@@ -1,6 +1,9 @@
 from django.contrib import admin
 
+from app.bottec_bot.services.broadcast import send_broadcast_message
+
 from .models import (
+    Broadcast,
     Category,
     Subcategory,
     Product,
@@ -10,6 +13,21 @@ from .models import (
     Order,
     User,
 )
+
+
+@admin.action(description='Отправить выбранные рассылки всем пользователям')
+def send_broadcasts(modeladmin, request, queryset):
+    for obj in queryset:
+        if not obj.is_sent:
+            send_broadcast_message(obj.id)
+            obj.is_sent = True
+            obj.save()
+
+
+@admin.register(Broadcast)
+class BroadcastAdmin(admin.ModelAdmin):
+    list_display = ('id', 'message', 'is_sent', 'created_at')
+    actions = [send_broadcasts]
 
 
 @admin.register(User)

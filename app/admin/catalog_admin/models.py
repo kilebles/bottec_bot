@@ -1,6 +1,19 @@
 from django.db import models
 
 
+class Broadcast(models.Model):
+    message = models.TextField('Текст сообщения')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_sent = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+
+    def __str__(self):
+        return f'Рассылка #{self.pk}'
+
+
 class User(models.Model):
     id = models.BigIntegerField(primary_key=True)  # Telegram ID
     username = models.CharField(max_length=255, blank=True, null=True)
