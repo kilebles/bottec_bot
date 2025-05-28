@@ -1,7 +1,6 @@
 from asgiref.sync import async_to_sync, sync_to_async
 from app.bottec_bot.dispatcher import bot
-from app.bottec_bot.db.models import User
-from app.admin.catalog_admin.models import Broadcast
+from app.admin.catalog_admin.models import Broadcast, User
 from app.bottec_bot.logging.setup import loggers
 
 logger = loggers['bot']
