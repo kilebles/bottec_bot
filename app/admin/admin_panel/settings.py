@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'catalog_admin',
+    "app.admin.catalog_admin",
 ]
 
 MIDDLEWARE = [
