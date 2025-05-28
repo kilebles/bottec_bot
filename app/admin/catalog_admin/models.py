@@ -17,6 +17,8 @@ class Broadcast(models.Model):
 class User(models.Model):
     id = models.BigIntegerField(primary_key=True)  # Telegram ID
     username = models.CharField(max_length=255, blank=True, null=True)
+    
+    objects = models.Manager()
 
     class Meta:
         db_table = 'users'
