@@ -7,6 +7,7 @@ class Broadcast(models.Model):
     is_sent = models.BooleanField(default=False)
 
     class Meta:
+        app_label = 'catalog_admin'
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
 
