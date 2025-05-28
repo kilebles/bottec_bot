@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class CatalogAdminConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "catalog_admin"
+    name = "app.admin.catalog_admin" 
