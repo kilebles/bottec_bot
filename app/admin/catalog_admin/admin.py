@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from bottec_bot.services.broadcast import send_broadcast_message
+from app.bottec_bot.services.broadcast import send_broadcast_message
 
 from .models import (
     Broadcast,
